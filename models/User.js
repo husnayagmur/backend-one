@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["user", "admin"], // İleride rol tabanlı izinler için
+    enum: ["user", "admin"], 
     default: "user",
   },
   isActive: {
