@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const personsRouter = require("./persons"); // diğer routerlar da buraya eklenebilir
+// örnek: const usersRouter = require("./users");
+
+router.use("/api/persons", personsRouter);
+// router.use("/api/users", usersRouter);
 
 module.exports = router;
