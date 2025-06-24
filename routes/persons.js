@@ -1,19 +1,30 @@
 const express = require("express");
 const router = express.Router();
 const Person = require("../models/Person");
+const AuditLog=require("../models/AuditLogs");
+const logger = require("../middleware/logger");
+async function createAuditLog({ userId, action, details }){
+     const log = new AuditLog({ userId, action, details });
+  await log.save();
+}
 
 // 1) GET: Tüm kişileri listele
 router.get("/", async (req, res) => {
     try {
-        // Veritabanından tüm kişileri getir
         const people = await Person.find();
-        // JSON formatında gönder
+
+        // Başarılı istek logu
+        logger.info("GET /api/persons - Tüm kişiler başarıyla listelendi.");
+
         res.json(people);
     } catch (error) {
-        // Hata varsa 500 hatası ve mesaj gönder
+        // Hatalı istek logu
+        logger.error(`GET /api/persons - Hata: ${error.message}`);
+
         res.status(500).json({ error: error.message });
     }
 });
+
 
 // 2) POST: Yeni kişi ekle
 router.post("/add", async (req, res) => {
